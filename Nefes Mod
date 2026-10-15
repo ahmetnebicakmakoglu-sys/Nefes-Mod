@@ -1,0 +1,625 @@
+index.html
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080b09">
+  <meta name="description" content="NefesMod 2.0 - Minecraft modlarını keşfet.">
+  <title>NefesMod 2.0 | Minecraft Modları</title>
+
+  <style>
+    :root {
+      --bg: #080b09;
+      --panel: #111713;
+      --panel2: #18221b;
+      --green: #43f477;
+      --green2: #20bd53;
+      --text: #f2fff5;
+      --muted: #9ba99f;
+      --border: #26372b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    button, input, select { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+
+    a { color: inherit; text-decoration: none; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: #080b09ed;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 16px;
+    }
+
+    .nav {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+      font-size: 20px;
+      letter-spacing: -.7px;
+    }
+
+    .logo {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      background: var(--green);
+      color: #061009;
+      border-radius: 10px;
+      font-size: 23px;
+      box-shadow: 0 0 22px #43f47722;
+    }
+
+    .brand span { color: var(--green); }
+
+    .nav button, .profile-button {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 13px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    main {
+      width: min(1100px, 100%);
+      margin: auto;
+      padding: 22px 16px 50px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #14271a, #0d130f 65%);
+      border: 1px solid #285b37;
+      border-radius: 22px;
+      padding: 32px 24px;
+      margin-bottom: 26px;
+    }
+
+    .hero:after {
+      content: "▦";
+      position: absolute;
+      right: 12px;
+      bottom: -62px;
+      font-size: 190px;
+      color: #43f4770c;
+      pointer-events: none;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #43f47718;
+      color: var(--green);
+      border: 1px solid #43f47744;
+      padding: 6px 10px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    h1 {
+      font-size: clamp(30px, 7vw, 48px);
+      line-height: 1.08;
+      margin: 16px 0 12px;
+      letter-spacing: -1.4px;
+    }
+
+    h1 span { color: var(--green); }
+
+    .hero p {
+      color: #bdcbbf;
+      line-height: 1.65;
+      max-width: 540px;
+      margin-bottom: 22px;
+    }
+
+    .search {
+      display: flex;
+      gap: 9px;
+      max-width: 620px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .search input {
+      width: 100%;
+      min-width: 0;
+      padding: 14px;
+      color: white;
+      background: #080b09;
+      border: 1px solid #344b39;
+      border-radius: 12px;
+      outline: none;
+    }
+
+    .search input:focus { border-color: var(--green); }
+
+    .primary {
+      background: var(--green);
+      color: #071109;
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin: 28px 0 14px;
+    }
+
+    h2 { font-size: 21px; margin: 0; }
+    .muted { color: var(--muted); font-size: 13px; }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 2px 0 12px;
+      scrollbar-width: thin;
+    }
+
+    .filter {
+      flex-shrink: 0;
+      color: #c8d4cb;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 9px 14px;
+      cursor: pointer;
+    }
+
+    .filter.active {
+      background: var(--green);
+      color: #061009;
+      border-color: var(--green);
+      font-weight: 800;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      min-width: 0;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      transition: border-color .2s, transform .2s;
+    }
+
+    .card:hover {
+      border-color: #43f47788;
+      transform: translateY(-2px);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .mod-icon {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: var(--panel2);
+      font-size: 27px;
+    }
+
+    .heart {
+      color: #a5b4a8;
+      border: 1px solid var(--border);
+      background: transparent;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 19px;
+    }
+
+    .heart.saved { color: #ff6384; }
+
+    .card h3 { font-size: 17px; margin: 15px 0 7px; }
+
+    .card p {
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--muted);
+      margin: 0 0 16px;
+      flex: 1;
+    }
+
+    .category {
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    .mod-link {
+      display: block;
+      text-align: center;
+      background: #43f47713;
+      color: var(--green);
+      border: 1px solid #43f47755;
+      border-radius: 10px;
+      padding: 11px 8px;
+      font-weight: 800;
+      font-size: 13px;
+      margin-top: 14px;
+    }
+
+    .mod-link:hover { background: #43f47725; }
+
+    .empty {
+      display: none;
+      padding: 35px 10px;
+      text-align: center;
+      color: var(--muted);
+      grid-column: 1 / -1;
+    }
+
+    .notice {
+      margin-top: 25px;
+      padding: 15px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    footer {
+      text-align: center;
+      border-top: 1px solid var(--border);
+      padding: 25px 15px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    footer strong { color: var(--green); }
+
+    @media (max-width: 700px) {
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .hero { padding: 25px 18px; }
+      .card { padding: 12px; }
+      .brand { font-size: 18px; }
+      .nav button { padding: 9px 10px; }
+    }
+
+    @media (max-width: 380px) {
+      .grid { grid-template-columns: 1fr; }
+      .search { flex-direction: column; }
+      .search .primary { width: 100%; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <nav class="nav">
+      <a class="brand" href="#" aria-label="NefesMod ana sayfa">
+        <div class="logo">▦</div>
+        <div>Nefes<span>Mod</span></div>
+      </a>
+      <button id="favoritesButton" type="button">♥ Favorilerim</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <span class="tag">◆ MINECRAFT MOD MERKEZİ</span>
+      <h1>Oyununu <span>geliştir.</span><br>Yeni dünyalar keşfet.</h1>
+      <p>
+        Minecraft deneyimini değiştirecek modları keşfet.
+        Ara, kategorileri incele ve beğendiklerini favorilerine ekle.
+      </p>
+
+      <form class="search" id="searchForm">
+        <input id="searchInput" type="search"
+          placeholder="Mod ara... Örn. Sodium"
+          aria-label="Mod ara">
+        <button class="primary" type="submit">Mod ara ↗</button>
+      </form>
+    </section>
+
+    <div class="section-head">
+      <h2 id="listTitle">⚡ Modları keşfet</h2>
+      <span class="muted" id="resultCount"></span>
+    </div>
+
+    <div class="filters" id="filters">
+      <button class="filter active" data-category="Tümü">Tümü</button>
+      <button class="filter" data-category="Performans">Performans</button>
+      <button class="filter" data-category="Grafik">Grafik</button>
+      <button class="filter" data-category="Harita">Harita</button>
+      <button class="filter" data-category="Yardımcı">Yardımcı</button>
+      <button class="filter" data-category="İçerik">İçerik</button>
+      <button class="filter" data-category="Kütüphane">Kütüphane</button>
+    </div>
+
+    <section class="grid" id="modGrid" aria-live="polite"></section>
+
+    <div class="notice">
+      <strong>Bilgi:</strong> Mod düğmeleri Modrinth üzerindeki proje sayfalarını
+      açar. İndirmeden önce Minecraft sürümünü, mod yükleyicisini (Fabric,
+      Forge veya NeoForge) ve cihazınla uyumluluğunu kontrol et.
+      NefesMod bu modların dosyalarını barındırmaz.
+    </div>
+  </main>
+
+  <footer>
+    <strong>NefesMod 2.0</strong> · Minecraft topluluğu için 💚
+    <br>Bağımsız bir mod keşif arayüzüdür; Mojang veya Microsoft ile bağlantılı değildir.
+  </footer>
+
+  <script>
+    const mods = [
+      {
+        name: "Sodium",
+        category: "Performans",
+        icon: "⚡",
+        description: "Minecraft Java Edition için görüntü performansını iyileştirmeye yardımcı olur.",
+        url: "https://modrinth.com/mod/sodium"
+      },
+      {
+        name: "Iris Shaders",
+        category: "Grafik",
+        icon: "🌈",
+        description: "Uyumlu shader paketlerini kullanmana yardımcı olan shader modudur.",
+        url: "https://modrinth.com/mod/iris"
+      },
+      {
+        name: "JEI",
+        category: "Yardımcı",
+        icon: "📦",
+        description: "Eşyaları ve üretim tariflerini oyun içinde görüntülemeye yardımcı olur.",
+        url: "https://modrinth.com/mod/jei"
+      },
+      {
+        name: "Xaero's Minimap",
+        category: "Harita",
+        icon: "🗺️",
+        description: "Dünyanı keşfederken kullanabileceğin küçük bir harita ekler.",
+        url: "https://modrinth.com/mod/xaeros-minimap"
+      },
+      {
+        name: "AppleSkin",
+        category: "Yardımcı",
+        icon: "🍎",
+        description: "Açlık ve doygunluk bilgilerini daha anlaşılır gösterir.",
+        url: "https://modrinth.com/mod/appleskin"
+      },
+      {
+        name: "Create",
+        category: "İçerik",
+        icon: "⚙️",
+        description: "Mekanik düzenekler ve hareketli makineler kurabileceğin bir mod.",
+        url: "https://modrinth.com/mod/create"
+      },
+      {
+        name: "Terralith",
+        category: "İçerik",
+        icon: "🌍",
+        description: "Minecraft dünyasının arazi oluşumlarını zenginleştirir.",
+        url: "https://modrinth.com/mod/terralith"
+      },
+      {
+        name: "Lithium",
+        category: "Performans",
+        icon: "🚀",
+        description: "Oyun performansını iyileştirmeyi hedefleyen optimizasyon modu.",
+        url: "https://modrinth.com/mod/lithium"
+      },
+      {
+        name: "Mod Menu",
+        category: "Yardımcı",
+        icon: "📋",
+        description: "Yüklü modları oyun içinde listelemeye yardımcı olur.",
+        url: "https://modrinth.com/mod/modmenu"
+      },
+      {
+        name: "Fabric API",
+        category: "Kütüphane",
+        icon: "🧩",
+        description: "Fabric için bazı modların ihtiyaç duyduğu ortak kütüphane.",
+        url: "https://modrinth.com/mod/fabric-api"
+      },
+      {
+        name: "JourneyMap",
+        category: "Harita",
+        icon: "🧭",
+        description: "Dünyanı harita üzerinde takip etmeye yarayan harita modu.",
+        url: "https://modrinth.com/mod/journeymap"
+      },
+      {
+        name: "Waystones",
+        category: "İçerik",
+        icon: "🌀",
+        description: "Dünyanda hızlı seyahat noktaları oluşturmanı sağlar.",
+        url: "https://modrinth.com/mod/waystones"
+      }
+    ];
+
+    const grid = document.getElementById("modGrid");
+    const searchInput = document.getElementById("searchInput");
+    const resultCount = document.getElementById("resultCount");
+    const listTitle = document.getElementById("listTitle");
+    const favoritesButton = document.getElementById("favoritesButton");
+
+    let activeCategory = "Tümü";
+    let favoritesOnly = false;
+    let favorites = [];
+
+    try {
+      favorites = JSON.parse(localStorage.getItem("nefesmod-favorites") || "[]");
+      if (!Array.isArray(favorites)) favorites = [];
+    } catch (error) {
+      favorites = [];
+    }
+
+    function saveFavorites() {
+      try {
+        localStorage.setItem("nefesmod-favorites", JSON.stringify(favorites));
+      } catch (error) {
+        console.warn("Favoriler bu tarayıcıda kaydedilemedi.");
+      }
+    }
+
+    function renderMods() {
+      const query = searchInput.value.trim().toLocaleLowerCase("tr");
+
+      const filtered = mods.filter(mod => {
+        const matchesCategory =
+          activeCategory === "Tümü" || mod.category === activeCategory;
+
+        const searchable = (
+          mod.name + " " + mod.description + " " + mod.category
+        ).toLocaleLowerCase("tr");
+
+        const matchesSearch = searchable.includes(query);
+        const matchesFavorite = !favoritesOnly || favorites.includes(mod.name);
+
+        return matchesCategory && matchesSearch && matchesFavorite;
+      });
+
+      listTitle.textContent = favoritesOnly
+        ? "♥ Favori modların"
+        : "⚡ Modları keşfet";
+
+      resultCount.textContent = filtered.length + " mod";
+      grid.innerHTML = "";
+
+      if (filtered.length === 0) {
+        grid.innerHTML =
+          '<div class="empty" style="display:block">Mod bulunamadı. Başka bir arama dene.</div>';
+        return;
+      }
+
+      filtered.forEach(mod => {
+        const isSaved = favorites.includes(mod.name);
+        const card = document.createElement("article");
+        card.className = "card";
+
+        const top = document.createElement("div");
+        top.className = "card-top";
+
+        const icon = document.createElement("div");
+        icon.className = "mod-icon";
+        icon.textContent = mod.icon;
+        icon.setAttribute("aria-hidden", "true");
+
+        const heart = document.createElement("button");
+        heart.className = "heart" + (isSaved ? " saved" : "");
+        heart.type = "button";
+        heart.textContent = isSaved ? "♥" : "♡";
+        heart.setAttribute("aria-label", isSaved
+          ? mod.name + " favorilerden çıkar"
+          : mod.name + " favorilere ekle");
+
+        heart.addEventListener("click", () => {
+          if (favorites.includes(mod.name)) {
+            favorites = favorites.filter(name => name !== mod.name);
+          } else {
+            favorites.push(mod.name);
+          }
+          saveFavorites();
+          renderMods();
+        });
+
+        top.append(icon, heart);
+
+        const category = document.createElement("div");
+        category.className = "category";
+        category.style.marginTop = "15px";
+        category.textContent = mod.category;
+
+        const title = document.createElement("h3");
+        title.textContent = mod.name;
+
+        const description = document.createElement("p");
+        description.textContent = mod.description;
+
+        const link = document.createElement("a");
+        link.className = "mod-link";
+        link.href = mod.url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = "Mod sayfasını aç ↗";
+
+        card.append(top, category, title, description, link);
+        grid.appendChild(card);
+      });
+    }
+
+    document.getElementById("filters").addEventListener("click", event => {
+      const button = event.target.closest("button[data-category]");
+      if (!button) return;
+
+      activeCategory = button.dataset.category;
+      document.querySelectorAll(".filter").forEach(item => {
+        item.classList.toggle("active", item === button);
+      });
+
+      renderMods();
+    });
+
+    searchInput.addEventListener("input", renderMods);
+
+    document.getElementById("searchForm").addEventListener("submit", event => {
+      event.preventDefault();
+      renderMods();
+    });
+
+    favoritesButton.addEventListener("click", () => {
+      favoritesOnly = !favoritesOnly;
+      favoritesButton.textContent = favoritesOnly
+        ? "← Tüm modlar"
+        : "♥ Favorilerim";
+      renderMods();
+    });
+
+    renderMods();
+  </script>
+</body>
+</html>
